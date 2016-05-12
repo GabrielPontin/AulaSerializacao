@@ -11,9 +11,28 @@ public class Implemeta<T> implements Serializador<T> {
 
 	@Override
 	public void Gravar(T t, File file) throws SerializadorException {
-		// TODO Auto-generated method stub
 		
+		Class<?>[] vet = t.getClass().getInterfaces();
+		
+		boolean achou = false;
+		
+		for(Class<?> class1 : vet){
+			if(class1.equals(Serializable.class)){
+				achou = true;
+				break;
+			}
+		}
+		if(!achou){
+			throw new SerializadorException("Classe nao" + "Implementa Serializable.");
+		}
+		try(FileOutputStream fos = new FileOutputStream(file);
+				ObjectOutputStream oos = new ObjectOutputStream(fos)){
+			oos.writeObject(t);
+		}catch(Exception e){
+			throw new SerializadorException(e);
+		}
 	}
+	
 
 	@Override
 	public T Ler(File file) throws SerializadorException {
