@@ -6,8 +6,9 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.lang.reflect.ParameterizedType;
 
-public class Implemeta<T> implements Serializador<T> {
+public class ImplementaSerializador<T> implements Serializador<T> {
 
 	@Override
 	public void Gravar(T t, File file) throws SerializadorException {
@@ -36,9 +37,25 @@ public class Implemeta<T> implements Serializador<T> {
 
 	@Override
 	public T Ler(File file) throws SerializadorException {
-		// TODO Auto-generated method stub
-		return null;
+		
+		try(FileInputStream fis = new FileInputStream(file);
+				ObjectInputStream ois = new ObjectInputStream(fis)){
+			
+			Object object = ois.readObject();
+			
+			Class<?> clGenType = (Class<?>) ((ParameterizedType)getClass()
+					.getGenericSuperclass())
+					.getActualTypeArguments()[0];
+			if(!object.getClass().equals(clGenType)){
+				throw new SerializadorException("Os tipos são Diferentes !");
+			}
+			
+		return (T) object;
+	
+	}catch(Exception e){
+		throw new SerializadorException(e);
 	}
+}
 
 	
 }
