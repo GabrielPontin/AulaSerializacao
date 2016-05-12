@@ -8,11 +8,12 @@ public class TesteSerializador {
 
 	public static void main(String[]args){
 		Cliente c = new Cliente();
-		c.setId(1);
+		c.setId(10);
 		c.setNome("Gabriel Pontin");
 		
+		
 		File file = new File("Cliente.dat");
-		ImplementaSerializador<Cliente> ser = new ImplementaSerializador<Cliente>();
+		ImplementaSerializador<Cliente> ser = new ImplementaSerializador<Cliente>(){};
 		
 		try{
 			ser.Gravar(c, file);

@@ -46,6 +46,7 @@ public class ImplementaSerializador<T> implements Serializador<T> {
 			Class<?> clGenType = (Class<?>) ((ParameterizedType)getClass()
 					.getGenericSuperclass())
 					.getActualTypeArguments()[0];
+			
 			if(!object.getClass().equals(clGenType)){
 				throw new SerializadorException("Os tipos são Diferentes !");
 			}
